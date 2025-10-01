@@ -1,0 +1,137 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "fullName": "John Wick",
+      "displayName": "John W.",
+      "email": "John@wick.com",
+      "details": "Highly skilled assassin known for his expertise in hand-to-hand combat and strategic takedowns.",
+      "active": true,
+      "location": "New York, USA"
+    },
+    {
+      "id": 2,
+      "fullName": "John Snow",
+      "displayName": "John S.",
+      "email": "John@snow.com",
+      "details": "Military commander with leadership experience, skilled in battle tactics and diplomacy.",
+      "active": false,
+      "location": "The North, Westeros"
+    },
+    {
+      "id": 3,
+      "fullName": "John Doe",
+      "displayName": "John D.",
+      "email": "John@doe.com",
+      "details": "An unidentified individual often used as a placeholder name in legal and investigative cases.",
+      "active": true
+    },
+    {
+      "id": 4,
+      "fullName": "John Lennon",
+      "displayName": "John L.",
+      "email": "John@lennon.com",
+      "details": "Renowned musician, songwriter, and peace activist, known for revolutionizing rock music.",
+      "active": true,
+      "location": "Liverpool, UK"
+    },
+    {
+      "id": 5,
+      "fullName": "John Adams",
+      "displayName": "John A.",
+      "email": "John@adams.com",
+      "details": "Political leader and former president with expertise in governance, law, and diplomacy.",
+      "active": false,
+      "location": "Massachusetts, USA"
+    },
+    {
+      "id": 6,
+      "fullName": "Jane Austen",
+      "displayName": "Jane A.",
+      "email": "Jane@austen.com",
+      "details": "Acclaimed writer specializing in novels that explore themes of love, society, and morality.",
+      "active": true,
+      "location": "Hampshire, UK"
+    },
+    {
+      "id": 7,
+      "fullName": "Emma Watson",
+      "displayName": "Emma W.",
+      "email": "Emma@watson.com",
+      "details": "Actress and activist known for her roles in film and her advocacy for gender equality.",
+      "active": true,
+      "location": "Paris, France"
+    },
+    {
+      "id": 8,
+      "fullName": "Harry Potter",
+      "displayName": "Harry P.",
+      "email": "Harry@potter.com",
+      "details": "Student with advanced knowledge in magic, specializing in defense against dark arts.",
+      "active": false,
+      "location": "Hogwarts, UK"
+    },
+    {
+      "id": 9,
+      "fullName": "Bruce Wayne",
+      "displayName": "Bruce W.",
+      "email": "Bruce@wayne.com",
+      "details": "Entrepreneur and CEO with expertise in technology, business management, and philanthropy.",
+      "active": true,
+      "location": "Gotham City, USA"
+    },
+    {
+      "id": 10,
+      "fullName": "Clark Kent",
+      "displayName": "Clark K.",
+      "email": "Clark@kent.com",
+      "details": "Investigative journalist with strong reporting skills and a dedication to uncovering the truth.",
+      "active": true,
+      "location": "Metropolis, USA"
+    },
+    {
+      "id": 11,
+      "fullName": "Diana Prince",
+      "displayName": "Diana P.",
+      "email": "Diana@prince.com",
+      "details": "Diplomat and ambassador with expertise in international relations and conflict resolution.",
+      "active": true,
+      "location": "Themyscira"
+    },
+    {
+      "id": 12,
+      "fullName": "Peter Parker",
+      "displayName": "Peter P.",
+      "email": "Peter@parker.com",
+      "details": "Talented photographer with a knack for capturing high-quality images of spiders for media and journalism.",
+      "active": false,
+      "location": "New York, USA"
+    },
+    {
+      "id": 13,
+      "fullName": "Tony Stark",
+      "displayName": "Tony S.",
+      "email": "Tony@stark.com",
+      "details": "Brilliant engineer and entrepreneur specializing in cutting-edge technology and robotics.",
+      "active": true,
+      "location": "Malibu, USA"
+    },
+    {
+      "id": 14,
+      "fullName": "Natasha Romanoff",
+      "displayName": "Natasha R.",
+      "email": "Natasha@romanoff.com",
+      "details": "Highly trained intelligence operative skilled in espionage, combat, and counter-terrorism.",
+      "active": true
+    },
+    {
+      "id": 15,
+      "fullName": "Steve Rogers",
+      "displayName": "Steve R.",
+      "email": "Steve@rogers.com",
+      "details": "Elite soldier with extensive military training and experience in battlefield leadership.",
+      "active": false,
+      "location": "Brooklyn, USA"
+    }
+  ]
+}
