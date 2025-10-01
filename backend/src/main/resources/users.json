@@ -1,0 +1,19 @@
+{
+    "users": [
+    {
+        "fullName": "Sheila Cox",
+        "email": "sheila.cox@example.com",
+        "role": "VIEWER",
+    },
+    {
+        "fullName": "Angel Hansen",
+        "email": "angel.hansen@example.com",
+        "role": "EDITOR",
+    },
+    {
+        "fullName": "Michael Scott",
+        "email": "theWorldsBestBOSS@example.com",
+        "role": "ADMIN",
+    },
+    ]
+}
