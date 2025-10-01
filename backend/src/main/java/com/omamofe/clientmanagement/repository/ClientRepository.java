@@ -1,0 +1,13 @@
+package com.omamofe.clientmanagement.repository;
+
+import com.omamofe.clientmanagement.entity.Client;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface ClientRepository extends JpaRepository<Client, Long> {
+
+    List<Client> findByFullNameContainingIgnoreCaseOrEmailContainingIgnoreCase(String fullName, String email);
+}
