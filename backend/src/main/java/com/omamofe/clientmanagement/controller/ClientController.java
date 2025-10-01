@@ -3,7 +3,6 @@ package com.omamofe.clientmanagement.controller;
 import com.omamofe.clientmanagement.dto.ClientDto;
 import com.omamofe.clientmanagement.dto.CreateClientDto;
 import com.omamofe.clientmanagement.dto.UpdateClientDto;
-import com.omamofe.clientmanagement.exception.ClientNotFoundException;
 import com.omamofe.clientmanagement.service.ClientService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -40,7 +39,7 @@ public class ClientController {
     @GetMapping
     public ResponseEntity<List<ClientDto>> getAllClients(HttpServletResponse response) {
         var list = clientService.getAllClients();
-        setClientCountCookie(response, clientService.countClients()); // always total
+        setClientCountCookie(response, clientService.countClients());
         return ResponseEntity.ok(list);
     }
 
@@ -50,12 +49,8 @@ public class ClientController {
             HttpServletResponse response
     ) {
         setClientCountCookie(response, clientService.countClients());
-        try {
-            ClientDto client = clientService.getClientById(id);
-            return ResponseEntity.ok(client);
-        } catch (ClientNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        ClientDto client = clientService.getClientById(id);
+        return ResponseEntity.ok(client);
     }
 
     @GetMapping("/search")
@@ -87,13 +82,9 @@ public class ClientController {
             @Valid @RequestBody UpdateClientDto dto,
             HttpServletResponse response
     ) {
-        try {
-            ClientDto updated = clientService.updateClient(id, dto);
-            setClientCountCookie(response, clientService.countClients());
-            return ResponseEntity.ok(updated);
-        } catch (ClientNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        ClientDto updated = clientService.updateClient(id, dto);
+        setClientCountCookie(response, clientService.countClients());
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
@@ -101,13 +92,9 @@ public class ClientController {
             @PathVariable Long id,
             HttpServletResponse response
     ) {
-        try {
-            clientService.deleteClient(id);
-            setClientCountCookie(response, clientService.countClients());
-            return ResponseEntity.noContent().build();
-        } catch (ClientNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        clientService.deleteClient(id);
+        setClientCountCookie(response, clientService.countClients());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/count")
