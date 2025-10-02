@@ -1,1 +1,12 @@
-<p>clients works!</p>
+<div *ngIf="loading">Loading clients...</div>
+
+<div *ngIf="!loading && clients.length === 0">No clients found.</div>
+
+<div *ngIf="!loading && clients.length > 0">
+  <mat-card *ngFor="let client of clients" class="client-card">
+    <h3>{{ client.name }}</h3>
+    <p>{{ client.email }}</p>
+    <p>Role: {{ client.role }}</p>
+    <p>Status: {{ client.active ? "Active" : "Inactive" }}</p>
+  </mat-card>
+</div>
