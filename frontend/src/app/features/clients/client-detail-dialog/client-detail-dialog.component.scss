@@ -1,0 +1,40 @@
+.row.center {
+  display: flex;
+  align-items: center;
+}
+.gap {
+  gap: 0.5rem;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+.k {
+  color: #666;
+  font-weight: 600;
+}
+.v {
+  word-break: break-word;
+}
+.mono {
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.status {
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #eee;
+}
+.status.active {
+  background: #e6f6ea;
+  color: #177245;
+}

@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { ClientsService, Client } from './clients.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ClientDetailDialogComponent } from './client-detail-dialog/client-detail-dialog.component';
 
 @Component({
   selector: 'app-clients',
@@ -19,6 +21,7 @@ import { ClientsService, Client } from './clients.service';
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
+    MatDialogModule,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
@@ -71,7 +74,10 @@ export class ClientsComponent implements OnInit {
     return data.slice(start, end);
   });
 
-  constructor(private clientsService: ClientsService) {}
+  constructor(
+    private clientsService: ClientsService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.loadClients();
@@ -111,5 +117,13 @@ export class ClientsComponent implements OnInit {
 
   trackById(index: number, client: Client): number {
     return client.id;
+  }
+  openDetail(row: Client) {
+    this.dialog.open(ClientDetailDialogComponent, {
+      data: { client: row },
+      width: '520px',
+      autoFocus: false,
+      restoreFocus: true,
+    });
   }
 }

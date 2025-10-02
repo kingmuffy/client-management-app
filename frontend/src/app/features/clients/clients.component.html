@@ -55,6 +55,8 @@
   <tr
     mat-row
     *matRowDef="let row; columns: displayedColumns; trackBy: trackById"
+    (click)="openDetail(row)"
+    class="clickable-row"
   ></tr>
 </table>
 

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Client Details</h2>
+
+<mat-dialog-content>
+  @if (loading()) {
+  <div class="row center gap">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="28"
+    ></mat-progress-spinner>
+    <span>Loading…</span>
+  </div>
+  } @else if (error()) {
+  <div class="error">{{ error() }}</div>
+  } @else if (client()) {
+  <div class="kv">
+    <div class="k">Full name</div>
+    <div class="v">{{ client()!.fullName }}</div>
+
+    <div class="k">Display name</div>
+    <div class="v">{{ client()!.displayName || "—" }}</div>
+
+    <div class="k">Email</div>
+    <div class="v">{{ client()!.email }}</div>
+
+    <div class="k">Location</div>
+    <div class="v">{{ client()!.location || "—" }}</div>
+
+    <div class="k">Status</div>
+    <div class="v">
+      <span class="status" [class.active]="client()!.active">
+        {{ client()!.active ? "Active" : "Inactive" }}
+      </span>
+    </div>
+
+    <div class="k">Details</div>
+    <div class="v mono">{{ client()!.details || "—" }}</div>
+  </div>
+  }
+</mat-dialog-content>
+
+<mat-divider></mat-divider>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>
