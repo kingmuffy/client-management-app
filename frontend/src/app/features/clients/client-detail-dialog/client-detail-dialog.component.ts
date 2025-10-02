@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ClientsService, Client } from '../clients.service';
-
+import { AuthService } from '../../../core/auth/auth.service';
 type DialogData = { id: number } | { client: Client };
 
 @Component({
@@ -31,6 +31,7 @@ export class ClientDetailDialogComponent implements OnInit {
   private data = inject(MAT_DIALOG_DATA) as DialogData;
   private clientsService = inject(ClientsService);
   dialogRef = inject(MatDialogRef<ClientDetailDialogComponent>);
+  public auth = inject(AuthService);
 
   loading = signal(true);
   error = signal<string | null>(null);
@@ -71,5 +72,23 @@ export class ClientDetailDialogComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
+  }
+  editClient() {
+    if (!this.client()) return;
+    console.log('Editing client:', this.client());
+  }
+
+  deleteClient() {
+    if (!this.client()) return;
+    const id = this.client()!.id;
+    if (confirm('Are you sure you want to delete this client?')) {
+      this.clientsService.deleteClient(id).subscribe({
+        next: () => {
+          alert('Client deleted successfully');
+          this.close();
+        },
+        error: () => alert('Failed to delete client'),
+      });
+    }
   }
 }

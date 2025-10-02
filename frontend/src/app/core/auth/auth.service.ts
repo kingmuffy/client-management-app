@@ -53,4 +53,19 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.token;
   }
+  get role(): string | null {
+    return this.currentUser ? this.currentUser.role : null;
+  }
+
+  isAdmin(): boolean {
+    return this.role === 'ADMIN';
+  }
+
+  isEditor(): boolean {
+    return this.role === 'EDITOR';
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.role === 'ADMIN' || this.role === 'EDITOR';
+  }
 }
