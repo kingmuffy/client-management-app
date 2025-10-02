@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 
 export interface Client {
   id: number;
-  name: string;
+  fullName: string;
+  displayName: string;
   email: string;
-  role: string;
+  details: string;
   active: boolean;
+  location: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ClientsService {
   private readonly API_URL = '/api/clients';
 
@@ -20,6 +20,10 @@ export class ClientsService {
 
   getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(this.API_URL);
+  }
+
+  getClientCount(): Observable<number> {
+    return this.http.get<number>(`${this.API_URL}/count`);
   }
 
   getClient(id: number): Observable<Client> {

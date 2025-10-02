@@ -1,12 +1,69 @@
-<div *ngIf="loading">Loading clients...</div>
+<h2>Clients ({{ clientCount() }})</h2>
 
-<div *ngIf="!loading && clients.length === 0">No clients found.</div>
+<mat-form-field appearance="outline" class="full-width">
+  <mat-label>Search clients</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Search by name/email/location..."
+  />
+</mat-form-field>
 
-<div *ngIf="!loading && clients.length > 0">
-  <mat-card *ngFor="let client of clients" class="client-card">
-    <h3>{{ client.name }}</h3>
-    <p>{{ client.email }}</p>
-    <p>Role: {{ client.role }}</p>
-    <p>Status: {{ client.active ? "Active" : "Inactive" }}</p>
-  </mat-card>
-</div>
+@if (loading()) {
+<div>Loading clients...</div>
+} @else if (clients().length === 0) {
+<div>No clients found.</div>
+} @else {
+<table
+  mat-table
+  [dataSource]="filteredClients()"
+  matSort
+  matSortDisableClear
+  (matSortChange)="onSortChange($event)"
+  class="mat-elevation-z8"
+>
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let client">{{ client.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="fullName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+    <td mat-cell *matCellDef="let client">{{ client.fullName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="displayName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>
+    <td mat-cell *matCellDef="let client">{{ client.displayName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+    <td mat-cell *matCellDef="let client">{{ client.email }}</td>
+  </ng-container>
+  <ng-container matColumnDef="location">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+    <td mat-cell *matCellDef="let client">{{ client.location }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="active">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+    <td mat-cell *matCellDef="let client">
+      {{ client.active ? "Active" : "Inactive" }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns; trackBy: trackById"
+  ></tr>
+</table>
+
+<mat-paginator
+  [length]="clients().length"
+  [pageSize]="pageSize()"
+  [pageIndex]="pageIndex()"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
+}
