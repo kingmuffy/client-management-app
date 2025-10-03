@@ -14,6 +14,8 @@ import { ClientDetailDialogComponent } from './client-detail-dialog/client-detai
 import { AuthService } from '../../core/auth/auth.service';
 import { ClientFormDialogComponent } from './client-form-dialog/client-form-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
+import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.component';
+
 @Component({
   selector: 'app-clients',
   standalone: true,
@@ -28,6 +30,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
     MatDialogModule,
     MatSnackBarModule,
     MatIconModule,
+    ClientsToolbarComponent,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
@@ -191,5 +194,29 @@ export class ClientsComponent implements OnInit {
         });
       }
     });
+  }
+  openAddClient() {
+    if (!this.canManage) return;
+
+    const ref = this.dialog.open(ClientFormDialogComponent, {
+      width: '520px',
+      data: { mode: 'add' },
+    });
+
+    ref.afterClosed().subscribe((created: Client | undefined) => {
+      if (created) {
+        this.clients.update((list) => [...list, created]);
+        this.clientCount.update((n) => n + 1);
+        this.snack.open('Client created', 'Close', { duration: 2500 });
+      }
+    });
+  }
+
+  handleUpload(format: string) {
+    console.log('Upload as:', format);
+  }
+
+  handleExport(format: string) {
+    console.log('Export as:', format);
   }
 }

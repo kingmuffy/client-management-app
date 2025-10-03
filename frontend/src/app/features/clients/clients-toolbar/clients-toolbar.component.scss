@@ -1,0 +1,22 @@
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+
+  // ✅ use theme variables instead of fixed colors
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  align-items: center;
+
+  // ✅ optional: make icons/text also use theme colors
+  mat-icon {
+    color: var(--mat-sys-on-surface);
+  }
+  button {
+    color: var(--mat-sys-on-surface);
+  }
+}

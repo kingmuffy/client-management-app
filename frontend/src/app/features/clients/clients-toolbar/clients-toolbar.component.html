@@ -1,0 +1,32 @@
+<div class="toolbar">
+  <button mat-raised-button color="primary" (click)="createClient.emit()">
+    <mat-icon>add</mat-icon>
+    New
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="uploadMenu">
+    <mat-icon>upload</mat-icon>
+    Upload
+  </button>
+  <mat-menu #uploadMenu="matMenu">
+    <button mat-menu-item (click)="uploadFile.emit('csv')">
+      <mat-icon>description</mat-icon> CSV
+    </button>
+    <button mat-menu-item (click)="uploadFile.emit('excel')">
+      <mat-icon>grid_on</mat-icon> Excel
+    </button>
+  </mat-menu>
+
+  <button mat-button [matMenuTriggerFor]="exportMenu">
+    <mat-icon>download</mat-icon>
+    Export
+  </button>
+  <mat-menu #exportMenu="matMenu">
+    <button mat-menu-item (click)="exportFile.emit('csv')">
+      <mat-icon>description</mat-icon> CSV
+    </button>
+    <button mat-menu-item (click)="exportFile.emit('excel')">
+      <mat-icon>grid_on</mat-icon> Excel
+    </button>
+  </mat-menu>
+</div>

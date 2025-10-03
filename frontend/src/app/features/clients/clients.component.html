@@ -1,10 +1,9 @@
 <h2>Clients ({{ clientCount() }})</h2>
-<!-- <div class="toolbar" *ngIf="canManage">
-  <button mat-raised-button color="primary" (click)="openAddClient()">
-    <mat-icon>add</mat-icon>
-    Add Client
-  </button>
-</div> -->
+<app-clients-toolbar
+  (createClient)="openAddClient()"
+  (uploadFile)="handleUpload($event)"
+  (exportFile)="handleExport($event)"
+></app-clients-toolbar>
 <mat-form-field appearance="outline" class="full-width">
   <mat-label>Search clients</mat-label>
   <input
