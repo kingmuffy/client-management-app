@@ -6,10 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 import { ClientsService, Client } from './clients.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ClientDetailDialogComponent } from './client-detail-dialog/client-detail-dialog.component';
-
+import { AuthService } from '../../core/auth/auth.service';
+import { ClientFormDialogComponent } from './client-form-dialog/client-form-dialog.component';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
 @Component({
   selector: 'app-clients',
   standalone: true,
@@ -22,6 +26,8 @@ import { ClientDetailDialogComponent } from './client-detail-dialog/client-detai
     MatPaginatorModule,
     MatSortModule,
     MatDialogModule,
+    MatSnackBarModule,
+    MatIconModule,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
@@ -38,13 +44,14 @@ export class ClientsComponent implements OnInit {
   pageIndex = signal(0);
   pageSize = signal(5);
 
-  displayedColumns: (keyof Client)[] = [
+  displayedColumns: (keyof Client | 'actions')[] = [
     'id',
     'fullName',
     'displayName',
     'email',
     'location',
     'active',
+    'actions',
   ];
 
   filteredClients = computed(() => {
@@ -76,8 +83,13 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientsService: ClientsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private auth: AuthService,
+    private snack: MatSnackBar
   ) {}
+  get canManage() {
+    return this.auth.isAdminOrEditor?.() ?? false;
+  }
 
   ngOnInit() {
     this.loadClients();
@@ -128,6 +140,55 @@ export class ClientsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.deleted || result?.edited) {
         this.loadClients();
+      }
+    });
+  }
+  editClient(client: Client, ev?: MouseEvent) {
+    ev?.stopPropagation();
+    if (!this.canManage) return;
+
+    const ref = this.dialog.open(ClientFormDialogComponent, {
+      width: '520px',
+      data: { mode: 'edit', client },
+    });
+
+    ref.afterClosed().subscribe((updated: Client | undefined) => {
+      if (updated) {
+        this.clients.update((list) =>
+          list.map((c) => (c.id === updated.id ? updated : c))
+        );
+        this.snack.open('Client updated', 'Close', { duration: 2500 });
+      }
+    });
+  }
+
+  deleteClient(client: Client, ev?: MouseEvent) {
+    ev?.stopPropagation();
+    if (!this.canManage) return;
+
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      width: '360px',
+      data: {
+        title: 'Delete Client',
+        message: `Are you sure you want to delete "${client.fullName}"?`,
+      },
+    });
+
+    ref.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.clientsService.deleteClient(client.id).subscribe({
+          next: () => {
+            this.clients.update((list) =>
+              list.filter((c) => c.id !== client.id)
+            );
+            this.clientCount.update((n) => Math.max(0, n - 1));
+            this.snack.open('Client deleted', 'Close', { duration: 2500 });
+          },
+          error: () =>
+            this.snack.open('Failed to delete client', 'Close', {
+              duration: 3000,
+            }),
+        });
       }
     });
   }

@@ -38,3 +38,10 @@ th.mat-header-cell {
 .clickable-row:hover {
   background-color: #f5f5f5;
 }
+.row-actions {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.clickable-row:hover .row-actions {
+  opacity: 1;
+}
