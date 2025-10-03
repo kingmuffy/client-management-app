@@ -111,4 +111,16 @@ public class ClientController {
         setClientCountCookie(response, count);
         return ResponseEntity.ok(count);
     }
+    @PostMapping("/bulk")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
+    public ResponseEntity<List<ClientDto>> bulkCreate(
+            @Valid @RequestBody List<@Valid CreateClientDto> dtos,
+            HttpServletResponse response
+    ) {
+        List<ClientDto> created = dtos.stream()
+                .map(clientService::createClient)
+                .toList();
+        setClientCountCookie(response, clientService.countClients());
+        return ResponseEntity.ok(created);
+    }
 }

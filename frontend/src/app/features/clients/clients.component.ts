@@ -15,7 +15,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { ClientFormDialogComponent } from './client-form-dialog/client-form-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
 import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.component';
-
+import { ImportClientsDialogComponent } from './import-clients-dialog.component';
 @Component({
   selector: 'app-clients',
   standalone: true,
@@ -31,6 +31,7 @@ import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.compo
     MatSnackBarModule,
     MatIconModule,
     ClientsToolbarComponent,
+    ImportClientsDialogComponent,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],
@@ -211,9 +212,24 @@ export class ClientsComponent implements OnInit {
       }
     });
   }
-
   handleUpload(format: string) {
-    console.log('Upload as:', format);
+    console.log('Upload clicked with', format);
+
+    const ref = this.dialog.open(ImportClientsDialogComponent, {
+      width: '720px',
+      autoFocus: false,
+      restoreFocus: false,
+      data: { format },
+    });
+
+    ref.afterClosed().subscribe((res) => {
+      if (res?.count) {
+        this.snack.open(`Imported ${res.count} client(s)`, 'Close', {
+          duration: 3000,
+        });
+        this.loadClients();
+      }
+    });
   }
 
   handleExport(format: string) {

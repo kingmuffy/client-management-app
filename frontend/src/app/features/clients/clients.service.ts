@@ -11,6 +11,14 @@ export interface Client {
   active: boolean;
   location: string;
 }
+export type CreateClientDto = {
+  fullName: string;
+  displayName?: string | null;
+  email: string;
+  details?: string | null;
+  active?: boolean | null;
+  location?: string | null;
+};
 
 @Injectable({ providedIn: 'root' })
 export class ClientsService {
@@ -40,5 +48,8 @@ export class ClientsService {
 
   deleteClient(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+  importClientsBulk(rows: CreateClientDto[]): Observable<Client[]> {
+    return this.http.post<Client[]>(`${this.API_URL}/bulk`, rows);
   }
 }
