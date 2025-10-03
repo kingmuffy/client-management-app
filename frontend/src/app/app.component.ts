@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from './core/auth/auth.service';
-
+import { HeaderComponent } from './shared/header/header.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,6 +15,7 @@ import { AuthService } from './core/auth/auth.service';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    HeaderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],

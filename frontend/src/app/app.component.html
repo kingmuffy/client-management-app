@@ -1,16 +1,4 @@
-<mat-toolbar class="app-header">
-  <span class="app-title">{{ title }}</span>
-
-  <span class="spacer"></span>
-
-  <ng-container *ngIf="auth.isLoggedIn()">
-    <span class="user-info"> {{ auth.username }} ({{ auth.role }}) </span>
-    <button mat-icon-button (click)="logout()" aria-label="Logout">
-      <mat-icon>logout</mat-icon>
-    </button>
-  </ng-container>
-</mat-toolbar>
-
+<app-header></app-header>
 <main class="app-main">
   <router-outlet></router-outlet>
 </main>

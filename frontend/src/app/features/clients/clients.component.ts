@@ -16,6 +16,8 @@ import { ClientFormDialogComponent } from './client-form-dialog/client-form-dial
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
 import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.component';
 import { ImportClientsDialogComponent } from './import-clients-dialog.component';
+import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-clients',
   standalone: true,
@@ -233,6 +235,38 @@ export class ClientsComponent implements OnInit {
   }
 
   handleExport(format: string) {
-    console.log('Export as:', format);
+    const data = this.clients();
+
+    if (!data.length) {
+      this.snack.open('No clients to export', 'Close', { duration: 2500 });
+      return;
+    }
+
+    const rows = data.map((c) => ({
+      fullName: c.fullName,
+      displayName: c.displayName,
+      email: c.email,
+      location: c.location,
+      details: c.details,
+      active: c.active ? 'true' : 'false',
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Clients');
+
+    if (format === 'excel') {
+      XLSX.writeFile(wb, 'clients.xlsx');
+    } else {
+      XLSX.writeFile(wb, 'clients.csv');
+    }
+
+    this.snack.open(
+      `Exported ${rows.length} client(s) as ${format.toUpperCase()}`,
+      'Close',
+      {
+        duration: 3000,
+      }
+    );
   }
 }
