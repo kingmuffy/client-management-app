@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>
+  {{ data.mode === "add" ? "Add Client" : "Edit Client" }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="fill">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="fullName" />
+      <mat-error *ngIf="form.get('fullName')?.hasError('required')">
+        Full name is required
+      </mat-error>
+      <mat-error *ngIf="form.get('fullName')?.hasError('maxlength')">
+        Max 100 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Display Name</mat-label>
+      <input matInput formControlName="displayName" />
+      <mat-error *ngIf="form.get('displayName')?.hasError('maxlength')">
+        Max 50 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        Invalid email
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('maxlength')">
+        Max 100 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" />
+      <mat-error *ngIf="form.get('location')?.hasError('maxlength')">
+        Max 100 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-row">
+      <mat-label>Details</mat-label>
+      <textarea matInput formControlName="details" rows="3"></textarea>
+      <mat-error *ngIf="form.get('details')?.hasError('maxlength')">
+        Max 500 characters
+      </mat-error>
+    </mat-form-field>
+
+    <div class="active-row">
+      <mat-slide-toggle formControlName="active">Active</mat-slide-toggle>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="form.invalid"
+  >
+    {{ data.mode === "add" ? "Create" : "Save" }}
+  </button>
+</mat-dialog-actions>

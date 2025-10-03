@@ -119,11 +119,16 @@ export class ClientsComponent implements OnInit {
     return client.id;
   }
   openDetail(row: Client) {
-    this.dialog.open(ClientDetailDialogComponent, {
+    const dialogRef = this.dialog.open(ClientDetailDialogComponent, {
       data: { client: row },
       width: '520px',
       autoFocus: false,
       restoreFocus: true,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.deleted || result?.edited) {
+        this.loadClients();
+      }
     });
   }
 }
