@@ -1,13 +1,30 @@
 <div class="toolbar">
+  @if (!canManage) {
+  <span matTooltip="Only Admins or Editors can create clients">
+    <button mat-raised-button color="primary" disabled>
+      <mat-icon>add</mat-icon>
+      New
+    </button>
+  </span>
+  } @else {
   <button mat-raised-button color="primary" (click)="createClient.emit()">
     <mat-icon>add</mat-icon>
     New
   </button>
-
+  } @if (!canManage) {
+  <span matTooltip="Only Admins or Editors can upload files">
+    <button mat-button disabled>
+      <mat-icon>upload</mat-icon>
+      Upload
+    </button>
+  </span>
+  } @else {
   <button mat-button [matMenuTriggerFor]="uploadMenu">
     <mat-icon>upload</mat-icon>
     Upload
   </button>
+  }
+
   <mat-menu #uploadMenu="matMenu">
     <button mat-menu-item (click)="uploadFile.emit('csv')">
       <mat-icon>description</mat-icon> CSV

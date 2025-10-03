@@ -3,6 +3,7 @@
   (createClient)="openAddClient()"
   (uploadFile)="handleUpload($event)"
   (exportFile)="handleExport($event)"
+  [canManage]="canManage"
 ></app-clients-toolbar>
 <mat-form-field appearance="outline" class="full-width">
   <mat-label>Search clients</mat-label>
