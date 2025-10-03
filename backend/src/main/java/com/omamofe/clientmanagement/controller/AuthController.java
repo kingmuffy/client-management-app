@@ -4,6 +4,7 @@ import com.omamofe.clientmanagement.dto.LoginRequest;
 import com.omamofe.clientmanagement.dto.LoginResponse;
 import com.omamofe.clientmanagement.dto.UserDto;
 import com.omamofe.clientmanagement.entity.User;
+import com.omamofe.clientmanagement.exception.AuthException;
 import com.omamofe.clientmanagement.repository.UserRepository;
 import com.omamofe.clientmanagement.security.JwtService;
 import jakarta.validation.Valid;
@@ -26,14 +27,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) {
-        // Normalize input a bit (defensive)
-        String email = req.getEmail().trim().toLowerCase();
+        String email = req.getEmail().trim();
 
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null || !Boolean.TRUE.equals(user.getActive())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        User user = userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new AuthException("User not found"));
+
+        if (!Boolean.TRUE.equals(user.getActive())) {
+            throw new AuthException("User account is inactive");
         }
-
         String token = jwt.generateToken(user);
 
         UserDto dto = new UserDto();

@@ -1,6 +1,8 @@
 package com.omamofe.clientmanagement.security;
 
 import com.omamofe.clientmanagement.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -48,5 +50,25 @@ public class JwtService {
                 .setExpiration(expiresAt)
                 .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+    public Claims parse(String token) throws JwtException {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+    public String getEmail(Claims claims) {
+
+        return claims.getSubject() != null ? claims.getSubject() : (String) claims.get("sub");
+    }
+
+    public String getRole(Claims claims) {
+        Object role = claims.get("role");
+        return role != null ? role.toString() : null;
+    }
+
+    public boolean isExpired(Claims claims) {
+        return claims.getExpiration() != null && claims.getExpiration().before(new Date());
     }
 }

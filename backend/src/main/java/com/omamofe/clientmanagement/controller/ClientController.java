@@ -11,6 +11,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.net.URI;
 import java.time.Duration;
@@ -37,6 +38,7 @@ public class ClientController {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR','VIEWER')")
     public ResponseEntity<List<ClientDto>> getAllClients(HttpServletResponse response) {
         var list = clientService.getAllClients();
         setClientCountCookie(response, clientService.countClients());
@@ -44,6 +46,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR','VIEWER')")
     public ResponseEntity<ClientDto> getClientById(
             @PathVariable Long id,
             HttpServletResponse response
@@ -54,6 +57,7 @@ public class ClientController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR','VIEWER')")
     public ResponseEntity<List<ClientDto>> searchClients(
             @RequestParam(required = false) String keyword,
             HttpServletResponse response
@@ -65,6 +69,7 @@ public class ClientController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     public ResponseEntity<ClientDto> createClient(
             @Valid @RequestBody CreateClientDto dto,
             UriComponentsBuilder uriBuilder,
@@ -77,6 +82,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     public ResponseEntity<ClientDto> updateClient(
             @PathVariable Long id,
             @Valid @RequestBody UpdateClientDto dto,
@@ -88,6 +94,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR')")
     public ResponseEntity<Void> deleteClient(
             @PathVariable Long id,
             HttpServletResponse response
@@ -98,6 +105,7 @@ public class ClientController {
     }
 
     @GetMapping("/count")
+    @PreAuthorize("hasAnyRole('ADMIN','EDITOR','VIEWER')")
     public ResponseEntity<Long> countClients(HttpServletResponse response) {
         long count = clientService.countClients();
         setClientCountCookie(response, count);
