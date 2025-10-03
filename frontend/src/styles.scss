@@ -8,7 +8,7 @@ $primary: mat.define-palette(mat.$orange-palette, 600);
 $accent: mat.define-palette(mat.$blue-palette, 600);
 $warn: mat.define-palette(mat.$red-palette);
 
-$theme: mat.define-light-theme(
+$light-theme: mat.define-light-theme(
   (
     color: (
       primary: $primary,
@@ -19,8 +19,25 @@ $theme: mat.define-light-theme(
     density: 0,
   )
 );
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  )
+);
 
-@include mat.all-component-themes($theme);
+@include mat.all-component-themes($light-theme);
+@media (prefers-color-scheme: dark) {
+  @include mat.all-component-colors($dark-theme);
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+}
+
 html,
 body {
   height: 100%;

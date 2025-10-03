@@ -68,4 +68,11 @@ export class AuthService {
   isAdminOrEditor(): boolean {
     return this.role === 'ADMIN' || this.role === 'EDITOR';
   }
+  get username(): string | null {
+    return this.currentUser ? this.currentUser.fullName : null;
+  }
+
+  get email(): string | null {
+    return this.currentUser ? this.currentUser.email : null;
+  }
 }
