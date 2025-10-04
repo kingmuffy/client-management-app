@@ -21,4 +21,9 @@ export const routes: Routes = [
       ),
     canActivate: [authGuard],
   },
+  {
+    path: 'logs',
+    loadComponent: () =>
+      import('./features/logs/logs.component').then((m) => m.LogsComponent),
+  },
 ];
