@@ -13,4 +13,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: 'drafts',
+    loadComponent: () =>
+      import('./features/drafts/drafts.component').then(
+        (m) => m.DraftsComponent
+      ),
+    canActivate: [authGuard],
+  },
 ];
