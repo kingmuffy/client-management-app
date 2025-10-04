@@ -62,11 +62,36 @@
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancel()">Cancel</button>
   <button
+    mat-stroked-button
+    color="accent"
+    (click)="saveAsDraft()"
+    [disabled]="
+      isDrafting || form.get('fullName')?.invalid || form.get('email')?.invalid
+    "
+  >
+    <mat-icon *ngIf="!isDrafting">save</mat-icon>
+    <mat-progress-spinner
+      *ngIf="isDrafting"
+      diameter="18"
+      mode="indeterminate"
+      color="accent"
+    ></mat-progress-spinner>
+    &nbsp; Save as Draft
+  </button>
+
+  <button
     mat-raised-button
     color="primary"
     (click)="save()"
-    [disabled]="form.invalid"
+    [disabled]="form.invalid || isSaving"
   >
-    {{ data.mode === "add" ? "Create" : "Save" }}
+    <mat-icon *ngIf="!isSaving">done</mat-icon>
+    <mat-progress-spinner
+      *ngIf="isSaving"
+      diameter="18"
+      mode="indeterminate"
+      color="primary"
+    ></mat-progress-spinner>
+    &nbsp; {{ data.mode === "add" ? "Create" : "Save" }}
   </button>
 </mat-dialog-actions>

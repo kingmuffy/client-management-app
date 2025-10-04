@@ -13,7 +13,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DraftsService } from '../drafts.service';
 import { ClientsService } from '../../clients/clients.service';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-draft-detail-dialog',
   standalone: true,
@@ -26,6 +27,8 @@ import { ClientsService } from '../../clients/clients.service';
     MatButtonModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './draft-detail-dialog.component.html',
   styleUrls: ['./draft-detail-dialog.component.scss'],
