@@ -9,6 +9,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DraftsService, Draft } from './drafts.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
+import { DraftDetailDialogComponent } from './draft-detail-dialog/draft-detail-dialog.component';
 
 @Component({
   selector: 'app-drafts',
@@ -94,8 +95,17 @@ export class DraftsComponent implements OnInit {
   }
 
   viewDraft(draft: Draft) {
-    this.snack.open(`Draft "${draft.fullName}" clicked`, '', {
-      duration: 1500,
+    const ref = this.dialog.open(DraftDetailDialogComponent, {
+      width: '600px',
+      data: { draft },
+      autoFocus: false,
+      restoreFocus: false,
+    });
+
+    ref.afterClosed().subscribe((result) => {
+      if (result?.updated || result?.posted) {
+        this.loadDrafts();
+      }
     });
   }
 }
