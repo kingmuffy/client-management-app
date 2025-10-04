@@ -9,7 +9,6 @@ import com.omamofe.clientmanagement.mapper.ClientMapper;
 import com.omamofe.clientmanagement.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -17,9 +16,11 @@ import java.util.List;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final AuditLogService audit;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, AuditLogService audit) {
         this.clientRepository = clientRepository;
+        this.audit = audit;
     }
 
     public List<ClientDto> getAllClients() {
@@ -49,6 +50,7 @@ public class ClientService {
     public ClientDto createClient(CreateClientDto dto) {
         Client entity = ClientMapper.fromCreateDto(dto);
         Client saved = clientRepository.save(entity);
+        audit.record("CREATE", "CLIENT", saved.getId());
         return ClientMapper.toDto(saved);
     }
 
@@ -58,6 +60,7 @@ public class ClientService {
 
         ClientMapper.applyUpdate(existing, dto);
         Client updated = clientRepository.save(existing);
+        audit.record("UPDATE", "CLIENT", id);
         return ClientMapper.toDto(updated);
     }
 
@@ -65,6 +68,7 @@ public class ClientService {
         Client existing = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
         clientRepository.delete(existing);
+        audit.record("UPDATE", "CLIENT", id);
     }
 
     public long countClients() {

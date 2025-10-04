@@ -23,6 +23,7 @@ import java.util.List;
 public class DraftService {
 
     private final DraftRepository draftRepository;
+    private final AuditLogService audit;
 
     private String currentEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -49,6 +50,7 @@ public class DraftService {
         Draft entity = DraftMapper.fromCreateDto(dto);
         entity.setCreatedByEmail(email);
         Draft saved = draftRepository.save(entity);
+        audit.record("CREATE", "DRAFT", saved.getId());
         return DraftMapper.toDto(saved);
     }
 
@@ -68,6 +70,7 @@ public class DraftService {
 
         DraftMapper.applyUpdate(d, dto);
         Draft saved = draftRepository.save(d);
+        audit.record("UPDATE", "DRAFT", id);
         return DraftMapper.toDto(saved);
     }
 
@@ -77,5 +80,6 @@ public class DraftService {
             throw new AccessDeniedException("You cannot delete another user’s draft");
         }
         draftRepository.delete(d);
+        audit.record("DELETE", "DRAFT", id);
     }
 }
