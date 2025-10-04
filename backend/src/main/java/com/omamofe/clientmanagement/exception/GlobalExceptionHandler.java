@@ -50,5 +50,13 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
+    @ExceptionHandler(DraftNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleDraftNotFound(DraftNotFoundException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Draft not found");
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
 
 }
