@@ -37,7 +37,8 @@ export class DraftDetailDialogComponent {
   private readonly snack = inject(MatSnackBar);
   private readonly dialogRef = inject(MatDialogRef<DraftDetailDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA) as any;
-
+  isPosting = false;
+  isSaving = false;
   form = this.fb.group({
     fullName: ['', Validators.required],
     displayName: [''],
@@ -54,7 +55,8 @@ export class DraftDetailDialogComponent {
   }
 
   saveDraft() {
-    if (this.form.invalid) return;
+    if (this.form.invalid || this.isSaving) return;
+    this.isSaving = true;
 
     const updated = { ...this.data.draft, ...this.form.value };
     this.draftsService.updateDraft(this.data.draft.id, updated).subscribe({
@@ -64,13 +66,16 @@ export class DraftDetailDialogComponent {
         });
         this.dialogRef.close({ updated: res });
       },
-      error: () =>
-        this.snack.open('Failed to update draft', 'Close', { duration: 3000 }),
+      error: () => {
+        this.snack.open('Failed to update draft', 'Close', { duration: 3000 });
+        this.isSaving = false;
+      },
     });
   }
 
   postAsClient() {
-    if (this.form.invalid) return;
+    if (this.form.invalid || this.isPosting) return;
+    this.isPosting = true;
 
     // convert nulls to empty strings
     const dto = Object.fromEntries(
@@ -83,13 +88,16 @@ export class DraftDetailDialogComponent {
           this.snack.open('Draft posted as client', 'Close', {
             duration: 2500,
           });
+          this.isPosting = false;
           this.dialogRef.close({ posted: true });
         });
       },
-      error: () =>
+      error: () => {
         this.snack.open('Failed to post as client', 'Close', {
           duration: 3000,
         }),
+          (this.isPosting = false);
+      },
     });
   }
 

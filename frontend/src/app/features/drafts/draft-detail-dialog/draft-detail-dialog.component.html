@@ -30,11 +30,37 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-stroked-button color="primary" (click)="saveDraft()">
-    Save Draft
+  <button mat-stroked-button (click)="cancel()">Cancel</button>
+
+  <button
+    mat-stroked-button
+    color="accent"
+    (click)="saveDraft()"
+    [disabled]="isSaving"
+  >
+    <mat-icon *ngIf="!isSaving">save</mat-icon>
+    <mat-progress-spinner
+      *ngIf="isSaving"
+      diameter="18"
+      mode="indeterminate"
+      color="accent"
+    ></mat-progress-spinner>
+    &nbsp; Save Draft
   </button>
-  <button mat-raised-button color="accent" (click)="postAsClient()">
-    Post as Client
+
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="postAsClient()"
+    [disabled]="isPosting"
+  >
+    <mat-icon *ngIf="!isPosting">send</mat-icon>
+    <mat-progress-spinner
+      *ngIf="isPosting"
+      diameter="18"
+      mode="indeterminate"
+      color="warn"
+    ></mat-progress-spinner>
+    &nbsp; Post as Client
   </button>
 </mat-dialog-actions>
