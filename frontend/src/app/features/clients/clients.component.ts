@@ -17,6 +17,7 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog.component';
 import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.component';
 import { ImportClientsDialogComponent } from './import-clients-dialog.component';
 import * as XLSX from 'xlsx';
+import { HighlightPipe } from '../../shared/pipes/highlight.pipe';
 
 @Component({
   selector: 'app-clients',
@@ -34,6 +35,7 @@ import * as XLSX from 'xlsx';
     MatIconModule,
     ClientsToolbarComponent,
     ImportClientsDialogComponent,
+    HighlightPipe,
   ],
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.scss'],

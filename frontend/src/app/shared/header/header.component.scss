@@ -1,30 +1,66 @@
 .app-header {
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  background-color: #ffffff;
-  color: #000000;
+  background: #fff;
+  color: #333;
   border-bottom: 1px solid #ddd;
+  padding: 0 1rem;
+
+  @media (prefers-color-scheme: dark) {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    border-bottom: 1px solid #444;
+  }
 }
 
 .app-title {
-  font-size: 1.25rem;
   font-weight: 600;
+  font-size: 18px;
 }
 
 .spacer {
   flex: 1 1 auto;
 }
+.profile-button {
+  text-transform: none;
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  min-width: auto;
 
-.user-info {
-  margin-right: 1rem;
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.profile-name {
   font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1976d2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  .app-header {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
-    border-bottom: 1px solid #444;
-  }
+.arrow {
+  font-size: 20px;
+  margin-left: 0.25rem;
+  color: inherit;
 }

@@ -34,7 +34,11 @@
 
   <ng-container matColumnDef="fullName">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-    <td mat-cell *matCellDef="let client">{{ client.fullName }}</td>
+    <td
+      mat-cell
+      *matCellDef="let client"
+      [innerHTML]="client.fullName | highlight : filterValue()"
+    ></td>
   </ng-container>
   <ng-container matColumnDef="displayName">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Display Name</th>

@@ -1,12 +1,30 @@
 <mat-toolbar class="app-header">
-  <span class="app-title">{{ title }}</span>
+  <span class="app-title">Client Management App</span>
 
   <span class="spacer"></span>
 
   <ng-container *ngIf="auth.isLoggedIn()">
-    <span class="user-info">{{ auth.username }} ({{ auth.role }})</span>
-    <button mat-icon-button (click)="logout()" aria-label="Logout">
-      <mat-icon>logout</mat-icon>
+    <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+      <div class="profile-container">
+        <span class="profile-name">{{ auth.username }} ({{ auth.role }})</span>
+        <span class="avatar">{{ initial }}</span>
+      </div>
     </button>
+
+    <mat-menu #profileMenu="matMenu">
+      <button mat-menu-item routerLink="/drafts">
+        <mat-icon>drafts</mat-icon>
+        Drafts
+      </button>
+      <button mat-menu-item routerLink="/logs">
+        <mat-icon>list_alt</mat-icon>
+        Logs
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
   </ng-container>
 </mat-toolbar>
