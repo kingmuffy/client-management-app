@@ -1,0 +1,76 @@
+<div *ngIf="!loading(); else loadingTpl">
+  <div>
+    <mat-card>
+      <mat-icon>group</mat-icon>
+      <div>
+        <h3>{{ totalClients() }}</h3>
+        <p>Total Clients</p>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-icon>check_circle</mat-icon>
+      <div>
+        <h3>{{ activeClients() }}</h3>
+        <p>Active</p>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-icon>cancel</mat-icon>
+      <div>
+        <h3>{{ inactiveClients() }}</h3>
+        <p>Inactive</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <div>
+    <mat-card>
+      <h3>Active vs Inactive Clients</h3>
+      <ngx-charts-pie-chart
+        [results]="[
+          { name: 'Active', value: activeClients() },
+          { name: 'Inactive', value: inactiveClients() }
+        ]"
+        [scheme]="colorScheme"
+        [legend]="true"
+        [doughnut]="true"
+        [labels]="true"
+      ></ngx-charts-pie-chart>
+    </mat-card>
+
+    <mat-card>
+      <h3>Clients per Location</h3>
+      <ngx-charts-bar-vertical
+        [results]="clientsByLocation()"
+        [scheme]="colorScheme"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="false"
+        [animations]="true"
+      ></ngx-charts-bar-vertical>
+    </mat-card>
+  </div>
+
+  <mat-card>
+    <h3>Recent Activity</h3>
+    <mat-divider></mat-divider>
+    <ul>
+      <li *ngFor="let log of recentLogs()">
+        <strong>{{ log.actorName }}</strong> {{ log.action }}
+        <em>{{ log.entityType }}</em> at
+        {{ log.timestamp | date : "short" }}
+      </li>
+    </ul>
+  </mat-card>
+</div>
+
+<ng-template #loadingTpl>
+  <div>
+    <mat-progress-spinner
+      mode="indeterminate"
+      color="primary"
+    ></mat-progress-spinner>
+  </div>
+</ng-template>
