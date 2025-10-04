@@ -1,6 +1,6 @@
-<div *ngIf="!loading(); else loadingTpl">
-  <div>
-    <mat-card>
+<div class="dashboard-container" *ngIf="!loading(); else loadingTpl">
+  <div class="summary-cards">
+    <mat-card class="summary-card total">
       <mat-icon>group</mat-icon>
       <div>
         <h3>{{ totalClients() }}</h3>
@@ -8,7 +8,7 @@
       </div>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="summary-card active">
       <mat-icon>check_circle</mat-icon>
       <div>
         <h3>{{ activeClients() }}</h3>
@@ -16,7 +16,7 @@
       </div>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="summary-card inactive">
       <mat-icon>cancel</mat-icon>
       <div>
         <h3>{{ inactiveClients() }}</h3>
@@ -25,8 +25,8 @@
     </mat-card>
   </div>
 
-  <div>
-    <mat-card>
+  <div class="charts-grid">
+    <mat-card class="chart-card">
       <h3>Active vs Inactive Clients</h3>
       <ngx-charts-pie-chart
         [results]="[
@@ -40,7 +40,7 @@
       ></ngx-charts-pie-chart>
     </mat-card>
 
-    <mat-card>
+    <mat-card class="chart-card">
       <h3>Clients per Location</h3>
       <ngx-charts-bar-vertical
         [results]="clientsByLocation()"
@@ -53,7 +53,7 @@
     </mat-card>
   </div>
 
-  <mat-card>
+  <mat-card class="logs-card">
     <h3>Recent Activity</h3>
     <mat-divider></mat-divider>
     <ul>
@@ -67,7 +67,7 @@
 </div>
 
 <ng-template #loadingTpl>
-  <div>
+  <div class="loading-center">
     <mat-progress-spinner
       mode="indeterminate"
       color="primary"
