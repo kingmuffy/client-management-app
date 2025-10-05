@@ -68,7 +68,7 @@ public class ClientService {
         Client existing = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
         clientRepository.delete(existing);
-        audit.record("UPDATE", "CLIENT", id);
+        audit.record("DELETE", "CLIENT", id);
     }
 
     public long countClients() {
