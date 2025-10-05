@@ -48,7 +48,7 @@ public class DraftController {
             HttpServletResponse response
     ) {
         DraftDto created = draftService.create(dto);
-        return ResponseEntity.ok(created);
+        return ResponseEntity.status(201).body(created);
     }
 
     @PutMapping("/{id}")

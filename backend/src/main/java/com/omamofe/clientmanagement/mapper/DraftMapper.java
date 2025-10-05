@@ -4,7 +4,7 @@ import com.omamofe.clientmanagement.dto.CreateDraftDto;
 import com.omamofe.clientmanagement.dto.DraftDto;
 import com.omamofe.clientmanagement.dto.UpdateDraftDto;
 import com.omamofe.clientmanagement.entity.Draft;
-
+import java.time.Instant;
 public class DraftMapper {
 
     public static DraftDto toDto(Draft entity) {
@@ -28,7 +28,7 @@ public class DraftMapper {
 
     public static Draft fromCreateDto(CreateDraftDto dto) {
         if (dto == null) return null;
-
+        Instant now = Instant.now();
         return Draft.builder()
                 .fullName(dto.getFullName())
                 .displayName(dto.getDisplayName())
@@ -36,6 +36,8 @@ public class DraftMapper {
                 .details(dto.getDetails())
                 .active(dto.getActive())
                 .location(dto.getLocation())
+                .createdAt(now)
+                .updatedAt(now)
                 .build();
     }
 
