@@ -164,7 +164,6 @@ public class DraftServiceTest {
         assertThatThrownBy(() -> draftService.delete(99L))
                 .isInstanceOf(DraftNotFoundException.class);
     }
-
     @Test
     void delete_asDifferentUser_throwsAccessDenied() {
         mockUser("sheila.cox@example.com", "ROLE_VIEWER");

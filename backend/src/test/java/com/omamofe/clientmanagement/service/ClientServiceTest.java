@@ -103,7 +103,6 @@ public class ClientServiceTest {
         assertThat(result.getFullName()).isEqualTo("Updated");
         verify(auditLogService).record("UPDATE", "CLIENT", 1L);
     }
-
     @Test
     void deleteClient_removesClient() {
         when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
