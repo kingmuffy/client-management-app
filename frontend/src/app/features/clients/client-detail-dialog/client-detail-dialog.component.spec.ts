@@ -120,4 +120,108 @@ describe('ClientDetailDialogComponent', () => {
     expect(comp.client()).toEqual(incoming);
     expect(comp.error()).toBeNull();
   });
+  it('editClient: opens form, updates client, shows snackbar and closes with payload', () => {
+    const updated = baseClient({ id: 3, fullName: 'Updated' });
+    const original = baseClient({ id: 3, fullName: 'Old' });
+
+    const { comp, snack, dlg, dlgRef, fixture } = setup({ client: original });
+
+    comp.client.set(original);
+
+    (dlg.open as jasmine.Spy).and.returnValue({
+      afterClosed: () => of(updated),
+    });
+
+    fixture.detectChanges();
+
+    comp.editClient();
+
+    expect(dlg.open).toHaveBeenCalled();
+    expect(comp.client()).toEqual(updated);
+    expect(snack.open).toHaveBeenCalledWith('Client updated', 'Close', {
+      duration: 2500,
+    });
+    expect(dlgRef.close).toHaveBeenCalledWith({
+      edited: true,
+      client: updated,
+    });
+  });
+
+  it('deleteClient: confirm -> success calls service, shows snackbar and closes', () => {
+    const current = baseClient({ id: 11, fullName: 'To Del' });
+    const { comp, svc, snack, dlg, dlgRef, fixture } = setup({
+      client: current,
+    });
+
+    comp.client.set(current);
+
+    (dlg.open as jasmine.Spy).and.returnValue({
+      afterClosed: () => of(true),
+    });
+    svc.deleteClient.and.returnValue(of(void 0));
+
+    fixture.detectChanges();
+
+    comp.deleteClient();
+
+    expect(dlg.open).toHaveBeenCalled();
+    expect(svc.deleteClient).toHaveBeenCalledWith(11);
+    expect(snack.open).toHaveBeenCalledWith(
+      'Client deleted successfully',
+      'Close',
+      { duration: 3000 }
+    );
+    expect(dlgRef.close).toHaveBeenCalledWith({ deleted: true });
+  });
+
+  it('deleteClient: confirm -> error shows failure snackbar (no close)', () => {
+    const current = baseClient({ id: 12, fullName: 'Err' });
+    const { comp, svc, snack, dlg, dlgRef, fixture } = setup({
+      client: current,
+    });
+
+    comp.client.set(current);
+
+    (dlg.open as jasmine.Spy).and.returnValue({
+      afterClosed: () => of(true),
+    });
+    svc.deleteClient.and.returnValue(throwError(() => new Error('nope')));
+
+    fixture.detectChanges();
+
+    comp.deleteClient();
+
+    expect(dlg.open).toHaveBeenCalled();
+    expect(svc.deleteClient).toHaveBeenCalledWith(12);
+    expect(snack.open).toHaveBeenCalledWith(
+      'Failed to delete client',
+      'Close',
+      {
+        duration: 3000,
+      }
+    );
+    expect(dlgRef.close).not.toHaveBeenCalledWith({ deleted: true });
+  });
+
+  it('deleteClient: cancel confirm -> does nothing', () => {
+    const current = baseClient({ id: 2, fullName: 'Cancel' });
+    const { comp, svc, snack, dlg, dlgRef, fixture } = setup({
+      client: current,
+    });
+
+    comp.client.set(current);
+
+    (dlg.open as jasmine.Spy).and.returnValue({
+      afterClosed: () => of(false),
+    });
+
+    fixture.detectChanges();
+
+    comp.deleteClient();
+
+    expect(dlg.open).toHaveBeenCalled();
+    expect(svc.deleteClient).not.toHaveBeenCalled();
+    expect(snack.open).not.toHaveBeenCalled();
+    expect(dlgRef.close).not.toHaveBeenCalled();
+  });
 });

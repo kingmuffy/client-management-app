@@ -146,4 +146,157 @@ describe('ClientFormDialogComponent', () => {
     expect(clients.addClient).not.toHaveBeenCalled();
     expect(dialogRef.close).not.toHaveBeenCalled();
   });
+  it('edit mode: constructor pre-fills form with client data', () => {
+    const client = baseClient({ fullName: 'Old Name', email: 'old@x.com' });
+    const { comp } = setup({ mode: 'edit', client });
+
+    expect(comp.form.get('fullName')!.value).toBe('Old Name');
+    expect(comp.form.get('email')!.value).toBe('old@x.com');
+  });
+
+  it('edit mode: save -> success calls update, shows snackbar and closes with updated', () => {
+    const client = baseClient({ id: 7, fullName: 'Old', email: 'old@x.com' });
+    const { comp, clients, snack, dialogRef } = setup({ mode: 'edit', client });
+
+    comp.form.patchValue({ fullName: 'Newer Name' });
+
+    const updated = { ...client, fullName: 'Newer Name' } as Client;
+    clients.updateClient.and.returnValue(of(updated));
+
+    comp.save();
+
+    expect(clients.updateClient).toHaveBeenCalledWith(
+      7,
+      jasmine.objectContaining({
+        fullName: 'Newer Name',
+      })
+    );
+    expect(snack.open).toHaveBeenCalledWith(
+      'Client updated successfully',
+      'Close',
+      { duration: 2500 }
+    );
+    expect(dialogRef.close).toHaveBeenCalledWith(updated);
+  });
+
+  it('edit mode: save -> error shows error snackbar and leaves isSaving=false', () => {
+    const client = baseClient({ id: 8, fullName: 'X', email: 'x@x.com' });
+    const { comp, clients, snack, dialogRef } = setup({ mode: 'edit', client });
+
+    comp.form.patchValue({ fullName: 'Y' });
+    clients.updateClient.and.returnValue(throwError(() => new Error('boom')));
+
+    comp.save();
+
+    expect(clients.updateClient).toHaveBeenCalledWith(8, jasmine.any(Object));
+    expect(snack.open).toHaveBeenCalledWith(
+      'Failed to update client',
+      'Close',
+      { duration: 3000 }
+    );
+    expect((comp as any).isSaving).toBeFalse();
+    expect(dialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('saveAsDraft: invalid fullName/email -> marks as touched and snacks', () => {
+    const { comp, drafts, snack, dialogRef } = setup({ mode: 'add' });
+
+    comp.form.patchValue({ fullName: '', email: 'bad', active: true });
+
+    comp.saveAsDraft();
+
+    expect(snack.open).toHaveBeenCalledWith(
+      'Enter full name and a valid email to save a draft.',
+      'Close',
+      { duration: 2500 }
+    );
+    expect(drafts.createDraft).not.toHaveBeenCalled();
+    expect(dialogRef.close).not.toHaveBeenCalled();
+  });
+
+  it('saveAsDraft: success -> shows snackbar and closes with { draft }', () => {
+    const { comp, drafts, snack, dialogRef } = setup({ mode: 'add' });
+
+    comp.form.setValue({
+      fullName: 'Drafty',
+      displayName: 'Dr',
+      email: 'd@x.com',
+      location: '',
+      details: '',
+      active: true,
+    });
+
+    const draftResp = { id: 123, fullName: 'Drafty', email: 'd@x.com' };
+    drafts.createDraft.and.returnValue(of(draftResp as any));
+
+    comp.saveAsDraft();
+
+    expect(drafts.createDraft).toHaveBeenCalled();
+    expect(snack.open).toHaveBeenCalledWith(
+      'Draft saved successfully',
+      'Close',
+      { duration: 2500 }
+    );
+    expect(dialogRef.close).toHaveBeenCalledWith({ draft: draftResp });
+    expect((comp as any).isDrafting).toBeFalse();
+  });
+
+  it('saveAsDraft: error -> shows error snackbar; stays open', () => {
+    const { comp, drafts, snack, dialogRef } = setup({ mode: 'add' });
+
+    comp.form.setValue({
+      fullName: 'Drafty',
+      displayName: '',
+      email: 'd@x.com',
+      location: '',
+      details: '',
+      active: true,
+    });
+
+    drafts.createDraft.and.returnValue(throwError(() => new Error('nope')));
+
+    spyOn(console, 'error');
+    comp.saveAsDraft();
+
+    expect(drafts.createDraft).toHaveBeenCalled();
+    expect(snack.open).toHaveBeenCalledWith('Failed to save draft', 'Close', {
+      duration: 3000,
+    });
+    expect(dialogRef.close).not.toHaveBeenCalled();
+    expect((comp as any).isDrafting).toBeFalse();
+  });
+
+  it('save: ignores second call while isSaving=true', () => {
+    const { comp, clients } = setup({ mode: 'add' });
+
+    comp.form.setValue({
+      fullName: 'One',
+      displayName: '',
+      email: 'one@x.com',
+      location: '',
+      details: '',
+      active: true,
+    });
+
+    (comp as any).isSaving = true;
+    comp.save();
+    expect(clients.addClient).not.toHaveBeenCalled();
+  });
+
+  it('saveAsDraft: ignores second call while isDrafting=true', () => {
+    const { comp, drafts } = setup({ mode: 'add' });
+
+    comp.form.setValue({
+      fullName: 'One',
+      displayName: '',
+      email: 'one@x.com',
+      location: '',
+      details: '',
+      active: true,
+    });
+
+    (comp as any).isDrafting = true;
+    comp.saveAsDraft();
+    expect(drafts.createDraft).not.toHaveBeenCalled();
+  });
 });
