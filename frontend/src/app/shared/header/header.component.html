@@ -12,15 +12,23 @@
     </button>
 
     <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item routerLink="/drafts">
+      <button mat-menu-item routerLink="/drafts" *ngIf="isAdmin || isEditor">
         <mat-icon>drafts</mat-icon>
         Drafts
       </button>
-      <button mat-menu-item routerLink="/logs">
+
+      <button mat-menu-item routerLink="/logs" *ngIf="isAdmin || isEditor">
         <mat-icon>list_alt</mat-icon>
         Logs
       </button>
+
+      <button mat-menu-item routerLink="/dashboard" *ngIf="isAdmin">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </button>
+
       <mat-divider></mat-divider>
+
       <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout

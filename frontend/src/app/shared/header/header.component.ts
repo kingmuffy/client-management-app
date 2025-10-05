@@ -26,6 +26,15 @@ import { MatDividerModule } from '@angular/material/divider';
 export class HeaderComponent {
   title = 'Client Management App';
   auth = inject(AuthService);
+  get isAdmin() {
+    return this.auth.isAdmin();
+  }
+  get isEditor() {
+    return this.auth.isEditor();
+  }
+  get isViewer() {
+    return this.auth.isLoggedIn() && !this.auth.isAdminOrEditor();
+  }
 
   logout() {
     this.auth.logout();
