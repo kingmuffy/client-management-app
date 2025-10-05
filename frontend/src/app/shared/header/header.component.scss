@@ -3,6 +3,7 @@
   color: #333;
   border-bottom: 1px solid #ddd;
   padding: 0 1rem;
+  font-size: clamp(14px, 2.2vw, 18px);
 
   @media (prefers-color-scheme: dark) {
     background: #1e1e1e;

@@ -19,6 +19,7 @@ import { ImportClientsDialogComponent } from './import-clients-dialog.component'
 import * as XLSX from 'xlsx';
 import { HighlightPipe } from '../../shared/pipes/highlight.pipe';
 import { BreakpointObserver } from '@angular/cdk/layout';
+
 type ColumnKey = keyof Client | 'actions';
 
 @Component({

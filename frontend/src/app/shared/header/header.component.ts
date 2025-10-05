@@ -7,6 +7,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -26,6 +27,7 @@ import { MatDividerModule } from '@angular/material/divider';
 export class HeaderComponent {
   title = 'Client Management App';
   auth = inject(AuthService);
+  private router = inject(Router);
   get isAdmin() {
     return this.auth.isAdmin();
   }
@@ -42,5 +44,8 @@ export class HeaderComponent {
   get initial(): string {
     const name = this.auth.username ?? '';
     return name ? name.charAt(0).toUpperCase() : '?';
+  }
+  goHome() {
+    this.router.navigateByUrl(this.auth.isLoggedIn() ? '/clients' : '/login');
   }
 }
