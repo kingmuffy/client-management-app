@@ -29,20 +29,24 @@ $dark-theme: mat.define-dark-theme(
   )
 );
 
-@include mat.all-component-themes($light-theme);
 @media (prefers-color-scheme: dark) {
   @include mat.all-component-colors($dark-theme);
   body {
     background-color: #121212;
     color: #e0e0e0;
   }
-}
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  .mat-mdc-table .mat-mdc-row.clickable-row:hover {
+    background: #fff !important;
+  }
+  .mat-mdc-table .mat-mdc-row.clickable-row:hover .mat-mdc-cell,
+  .mat-mdc-table .mat-mdc-row.clickable-row:hover .mat-mdc-cell *,
+  .mat-mdc-table .mat-mdc-row.clickable-row:hover .mat-icon {
+    color: #000 !important;
+  }
+
+  .mat-mdc-table .mat-mdc-row.clickable-row:hover mark {
+    background: #ffeb3b;
+    color: #000 !important;
+  }
 }

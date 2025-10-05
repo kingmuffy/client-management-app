@@ -25,3 +25,26 @@ table {
 .mat-mdc-header-cell {
   padding: 0.75rem 1rem;
 }
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.empty-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.empty-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.empty-subtitle {
+  font-size: 0.95rem;
+}

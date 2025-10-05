@@ -3,7 +3,14 @@
 <mat-progress-bar *ngIf="loading()" mode="indeterminate"></mat-progress-bar>
 
 @if (!loading() && drafts().length === 0) {
-<div>No drafts found.</div>
+<div class="empty-state">
+  <mat-icon class="empty-icon">drafts</mat-icon>
+  <div class="empty-title">No drafts yet</div>
+  <div class="empty-subtitle">
+    When you start creating a client, you can save it as a draft and it will
+    appear here.
+  </div>
+</div>
 } @else if (!loading()) {
 <table mat-table [dataSource]="drafts()" class="mat-elevation-z8">
   <ng-container matColumnDef="id">

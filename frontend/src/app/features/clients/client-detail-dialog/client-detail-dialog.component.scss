@@ -38,3 +38,24 @@
   background: #e6f6ea;
   color: #177245;
 }
+
+@media (prefers-color-scheme: dark) {
+  .mono {
+    background: #fff;
+    color: #000;
+    border-color: #ddd;
+  }
+
+  .k {
+    color: #bdbdbd;
+  }
+
+  .status {
+    background: #e0e0e0;
+    color: #000;
+  }
+  .status.active {
+    background: #e6f6ea;
+    color: #177245;
+  }
+}

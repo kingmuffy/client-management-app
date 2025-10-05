@@ -50,3 +50,35 @@ mark {
   color: inherit;
   padding: 0;
 }
+:host-context(.dark-theme) tr.clickable-row:hover {
+  background-color: #fff;
+  --mat-table-row-item-label-text-color: rgba(0, 0, 0, 0.87);
+  --mat-table-row-item-icon-color: rgba(0, 0, 0, 0.87);
+  --mat-table-row-item-disabled-text-color: rgba(0, 0, 0, 0.38);
+}
+.status-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+.dot--active {
+  color: #2e7d32;
+}
+.dot--inactive {
+  color: #e53935;
+}
+
+.clickable-row .status-cell .dot {
+  width: 9px;
+  height: 9px;
+}

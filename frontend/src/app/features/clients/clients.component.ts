@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,6 +18,8 @@ import { ClientsToolbarComponent } from './clients-toolbar/clients-toolbar.compo
 import { ImportClientsDialogComponent } from './import-clients-dialog.component';
 import * as XLSX from 'xlsx';
 import { HighlightPipe } from '../../shared/pipes/highlight.pipe';
+import { BreakpointObserver } from '@angular/cdk/layout';
+type ColumnKey = keyof Client | 'actions';
 
 @Component({
   selector: 'app-clients',
@@ -48,19 +50,26 @@ export class ClientsComponent implements OnInit {
 
   sortActive = signal<keyof Client | ''>('');
   sortDirection = signal<'asc' | 'desc' | ''>('');
+  private bp = inject(BreakpointObserver);
+  isSmall = signal(false);
 
   pageIndex = signal(0);
   pageSize = signal(5);
 
-  displayedColumns: (keyof Client | 'actions')[] = [
-    'id',
-    'fullName',
-    'displayName',
-    'email',
-    'location',
-    'active',
-    'actions',
-  ];
+  displayedColumns = computed<ColumnKey[]>(() => {
+    const baseLarge: ColumnKey[] = [
+      'id',
+      'fullName',
+      'displayName',
+      'email',
+      'location',
+      'active',
+    ];
+    const baseSmall: ColumnKey[] = ['id', 'fullName', 'email', 'active'];
+    const cols: ColumnKey[] = this.isSmall() ? [...baseSmall] : [...baseLarge];
+    if (this.canManage) cols.push('actions');
+    return cols;
+  });
 
   filteredClients = computed(() => {
     let data = this.clients();
@@ -94,7 +103,11 @@ export class ClientsComponent implements OnInit {
     private dialog: MatDialog,
     private auth: AuthService,
     private snack: MatSnackBar
-  ) {}
+  ) {
+    this.bp.observe(['(max-width: 768px)']).subscribe((r) => {
+      this.isSmall.set(r.matches);
+    });
+  }
   get canManage() {
     return this.auth.isAdminOrEditor?.() ?? false;
   }
@@ -208,11 +221,13 @@ export class ClientsComponent implements OnInit {
       data: { mode: 'add' },
     });
 
-    ref.afterClosed().subscribe((created: Client | undefined) => {
-      if (created) {
+    ref.afterClosed().subscribe((result: any) => {
+      if (result && typeof result === 'object' && 'id' in result) {
+        const created = result as Client;
         this.clients.update((list) => [...list, created]);
         this.clientCount.update((n) => n + 1);
         this.snack.open('Client created', 'Close', { duration: 2500 });
+        return;
       }
     });
   }
